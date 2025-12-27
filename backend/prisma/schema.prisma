@@ -12,6 +12,18 @@ datasource db {
   provider = "postgresql"
 }
 
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("USER") // ADMIN, USER, PARTNER
+  refreshToken String?
+  createdAt DateTime @default(now())
+  
+  loanApplications LoanApplication[]
+  loans            Loan[]
+}
 
 model LoanProduct {
   id            String   @id @default(uuid())
@@ -27,22 +39,29 @@ model LoanProduct {
 
 model LoanApplication {
   id           String   @id @default(uuid())
-  applicant    String
   loanAmount   Float
-  status       String
+  status       String   @default("PENDING")
   productId    String
+  userId       String
   createdAt    DateTime @default(now())
 
   product LoanProduct @relation(fields: [productId], references: [id])
+  user    User        @relation(fields: [userId], references: [id])
+  loans   Loan[]
 }
 
 model Loan {
-  id               String   @id @default(uuid())
+  id                String   @id @default(uuid())
   loanApplicationId String
+  userId            String
   outstandingAmount Float
   interestRate      Float
   status            String
   createdAt         DateTime @default(now())
+  
+  loanApplication LoanApplication @relation(fields: [loanApplicationId], references: [id])
+  user            User            @relation(fields: [userId], references: [id])
+  collaterals     Collateral[]
 }
 
 model Collateral {
@@ -52,4 +71,6 @@ model Collateral {
   units     Float
   nav       Float
   loanId    String
+  
+  loan Loan @relation(fields: [loanId], references: [id])
 }
