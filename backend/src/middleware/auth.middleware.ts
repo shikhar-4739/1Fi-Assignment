@@ -6,7 +6,6 @@ interface JwtPayload {
   role: string
 }
 
-
 export const authenticate = (
   req: Request,
   res: Response,

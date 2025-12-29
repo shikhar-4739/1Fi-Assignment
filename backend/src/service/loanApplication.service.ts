@@ -1,9 +1,11 @@
 import { prisma } from "../config/db";
+import { ApiError } from "../utils/ApiError";
 
 export const createLoanApplication = async (
   applicantId: string,
   productId: string,
-  loanAmount: number
+  loanAmount: number,
+  tenure: number
 ) => {
   const product = await prisma.loanProduct.findUnique({
     where: { id: productId },
@@ -34,6 +36,7 @@ export const createLoanApplication = async (
       userId: applicantId,
       productId,
       loanAmount,
+      tenure,
       status: "PENDING",
     },
   });
@@ -54,5 +57,41 @@ export const getAllLoanApplications = async () => {
       user: { select: { id: true, name: true, email: true } },
     },
     orderBy: { createdAt: "desc" },
+  });
+};
+
+export const approveLoanApplication = async (applicationId: string) => {
+  const application = await prisma.loanApplication.findUnique({
+    where: { id: applicationId },
+    include: { product: true },
+  });
+  
+  if (!application) {
+    throw new ApiError(404, "Loan application not found");
+  }
+  
+  if (application.status !== "PENDING") {
+    throw new ApiError(400, "Only pending applications can be approved");
+  }
+
+  // Use a transaction to update application and create loan
+  return prisma.$transaction(async (tx) => {
+ 
+    const updatedApplication = await tx.loanApplication.update({
+      where: { id: applicationId },
+      data: { status: "APPROVED" },
+    });
+
+    const loan = await tx.loan.create({
+      data: {
+        userId: application.userId,
+        loanApplicationId: application.id,
+        interestRate: application.product.interestRate,
+        tenure: application.tenure,
+        outstandingAmount: application.loanAmount,
+      },
+    });
+
+    return { loan };
   });
 };

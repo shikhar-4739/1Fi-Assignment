@@ -22,9 +22,13 @@ app.get('/health', (_, res) => {
 import loanProductRoutes from './routes/loanProduct.routes.js'
 import authRoutes from './routes/auth.routes.js'
 import loanApplicationRoutes from './routes/loanApplication.routes.js';
+import approvedLoanRoutes from './routes/approvedLoans.routes.js';
+import collateralRoutes from './routes/collateral.routes.js';
 
 app.use('/api/loan-products', loanProductRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/loan-application', loanApplicationRoutes);
+app.use('/api/approved-loans', approvedLoanRoutes);
+app.use('/api/collateral', collateralRoutes);
 
 export default app

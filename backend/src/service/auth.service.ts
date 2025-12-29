@@ -4,14 +4,16 @@ import jwt from "jsonwebtoken";
 import type { StringValue } from "ms";
 import type { Secret } from "jsonwebtoken";
 import { ApiError } from "../utils/ApiError";
+import type { UserRole } from "@prisma/client";
 
 export const registerUser = async (
   name: string,
   email: string,
-  password: string
+  password: string,
+  role: UserRole
 ) => {
-  if (!name || !email || !password) {
-    throw new ApiError(400, "Name, email and password are required");
+  if (!name || !email || !password || !role) {
+    throw new ApiError(400, "Name, email, password, and role are required");
   }
   const existingUser = await prisma.user.findUnique({ where: { email } });
   if (existingUser) {
@@ -21,7 +23,7 @@ export const registerUser = async (
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const user = await prisma.user.create({
-    data: { name, email, password: hashedPassword },
+    data: { name, email, password: hashedPassword, role },
     select: {
       id: true,
       name: true,

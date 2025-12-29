@@ -12,12 +12,29 @@ datasource db {
   provider = "postgresql"
 }
 
+enum LoanStatus {
+  ACTIVE
+  CLOSED
+  DEFAULTED
+}
+
+enum LoanApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum UserRole {
+  ADMIN
+  USER
+  PARTNER
+}
 model User {
   id        String   @id @default(uuid())
   name      String
   email     String   @unique
   password  String
-  role      String   @default("USER") // ADMIN, USER, PARTNER
+  role      UserRole   @default(USER)
   refreshToken String?
   createdAt DateTime @default(now())
   
@@ -40,14 +57,16 @@ model LoanProduct {
 model LoanApplication {
   id           String   @id @default(uuid())
   loanAmount   Float
-  status       String   @default("PENDING")
+  status       LoanApplicationStatus   @default(PENDING)
   productId    String
   userId       String
+  tenure       Int      @default(12) // in months
   createdAt    DateTime @default(now())
 
   product LoanProduct @relation(fields: [productId], references: [id])
   user    User        @relation(fields: [userId], references: [id])
   loans   Loan[]
+  collaterals     Collateral[]
 }
 
 model Loan {
@@ -56,12 +75,12 @@ model Loan {
   userId            String
   outstandingAmount Float
   interestRate      Float
-  status            String
+  tenure            Int    // in months
+  status            LoanStatus   @default(ACTIVE)
   createdAt         DateTime @default(now())
   
   loanApplication LoanApplication @relation(fields: [loanApplicationId], references: [id])
   user            User            @relation(fields: [userId], references: [id])
-  collaterals     Collateral[]
 }
 
 model Collateral {
@@ -70,7 +89,7 @@ model Collateral {
   isin      String
   units     Float
   nav       Float
-  loanId    String
+  loanApplicationId    String
   
-  loan Loan @relation(fields: [loanId], references: [id])
+  loanApplication LoanApplication @relation(fields: [loanApplicationId], references: [id])
 }

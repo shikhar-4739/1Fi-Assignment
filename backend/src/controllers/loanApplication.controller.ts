@@ -3,19 +3,19 @@ import * as loanApplicationService from '../service/loanApplication.service'
 
 export const createLoanApplication = async (req: Request, res: Response) => {
   try {
-    console.log('req.user:', req.body);
-    const { productId, loanAmount } = req.body
+    const { productId, loanAmount, tenure } = req.body
     const applicantId = req.user!.userId
 
-    if(!productId || !loanAmount) {
-      return  res.status(400).json({ message: 'Product ID and loan amount are required' })
+    if(!productId || !loanAmount || !tenure) {
+      return  res.status(400).json({ message: 'Product ID, loan amount, and tenure are required' })
     }
 
     const application =
       await loanApplicationService.createLoanApplication(
         applicantId,
         productId,
-        loanAmount
+        loanAmount,
+        tenure
       )
 
     res.status(201).json(application)
@@ -43,4 +43,19 @@ export const getAllLoanApplications = async (req: Request, res: Response) => {
     } catch {
       res.status(500).json({ message: 'Failed to fetch applications' })
     }
+}
+
+export const approveLoanApplication = async (req: Request, res: Response) => {
+  try {
+    const { applicationId } = req.params
+    
+    if (!applicationId) {
+      return res.status(400).json({ message: 'Application ID is required' })
+    }
+
+    const result = await loanApplicationService.approveLoanApplication(applicationId)
+    res.json(result)
+  } catch (err: any) {
+    res.status(400).json({ message: err.message })
+  }
 }
