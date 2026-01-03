@@ -1,6 +1,8 @@
 import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
+import swaggerUi from 'swagger-ui-express'
+import { swaggerSpec } from './config/swagger'
 const app = express()
 
 
@@ -32,4 +34,5 @@ app.use('/api/loan-application', loanApplicationRoutes);
 app.use('/api/approved-loans', approvedLoanRoutes);
 app.use('/api/collateral', collateralRoutes);
 app.use('/api/partner', fintechPartnerRoutes)
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 export default app
