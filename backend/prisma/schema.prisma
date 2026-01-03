@@ -35,11 +35,14 @@ model User {
   email     String   @unique
   password  String
   role      UserRole   @default(USER)
+  partnerId String?
+  partnerCustomerId String?
   refreshToken String?
   createdAt DateTime @default(now())
-  
   loanApplications LoanApplication[]
   loans            Loan[]
+
+  @@unique([partnerId, partnerCustomerId])
 }
 
 model LoanProduct {
@@ -62,7 +65,8 @@ model LoanApplication {
   userId       String
   tenure       Int      @default(12) // in months
   createdAt    DateTime @default(now())
-
+  partnerId    String?
+  partnerCustomerId String?
   product LoanProduct @relation(fields: [productId], references: [id])
   user    User        @relation(fields: [userId], references: [id])
   loans   Loan[]
@@ -78,7 +82,8 @@ model Loan {
   tenure            Int    // in months
   status            LoanStatus   @default(ACTIVE)
   createdAt         DateTime @default(now())
-  
+  partnerId         String?
+  partnerCustomerId String?
   loanApplication LoanApplication @relation(fields: [loanApplicationId], references: [id])
   user            User            @relation(fields: [userId], references: [id])
 }
@@ -90,6 +95,18 @@ model Collateral {
   units     Float
   nav       Float
   loanApplicationId    String
+  partnerId String?
+  partnerCustomerId String?
+  createdAt DateTime @default(now())
   
   loanApplication LoanApplication @relation(fields: [loanApplicationId], references: [id])
+}
+
+model FintechPartner {
+  id              String   @id @default(uuid())
+  name            String
+  apiKey          String   @unique
+  isActive        Boolean  @default(true)
+  rateLimitPerMin Int      @default(60) // requests per minute
+  createdAt       DateTime @default(now())
 }

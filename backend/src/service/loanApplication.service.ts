@@ -60,38 +60,38 @@ export const getAllLoanApplications = async () => {
   });
 };
 
-export const approveLoanApplication = async (applicationId: string) => {
-  const application = await prisma.loanApplication.findUnique({
-    where: { id: applicationId },
-    include: { product: true },
-  });
+// export const approveLoanApplication = async (applicationId: string) => {
+//   const application = await prisma.loanApplication.findUnique({
+//     where: { id: applicationId },
+//     include: { product: true },
+//   });
   
-  if (!application) {
-    throw new ApiError(404, "Loan application not found");
-  }
+//   if (!application) {
+//     throw new ApiError(404, "Loan application not found");
+//   }
   
-  if (application.status !== "PENDING") {
-    throw new ApiError(400, "Only pending applications can be approved");
-  }
+//   if (application.status !== "PENDING") {
+//     throw new ApiError(400, "Only pending applications can be approved");
+//   }
 
-  // Use a transaction to update application and create loan
-  return prisma.$transaction(async (tx) => {
+//   // Use a transaction to update application and create loan
+//   return prisma.$transaction(async (tx) => {
  
-    const updatedApplication = await tx.loanApplication.update({
-      where: { id: applicationId },
-      data: { status: "APPROVED" },
-    });
+//     const updatedApplication = await tx.loanApplication.update({
+//       where: { id: applicationId },
+//       data: { status: "APPROVED" },
+//     });
 
-    const loan = await tx.loan.create({
-      data: {
-        userId: application.userId,
-        loanApplicationId: application.id,
-        interestRate: application.product.interestRate,
-        tenure: application.tenure,
-        outstandingAmount: application.loanAmount,
-      },
-    });
+//     const loan = await tx.loan.create({
+//       data: {
+//         userId: application.userId,
+//         loanApplicationId: application.id,
+//         interestRate: application.product.interestRate,
+//         tenure: application.tenure,
+//         outstandingAmount: application.loanAmount,
+//       },
+//     });
 
-    return { loan };
-  });
-};
+//     return { loan };
+//   });
+// };

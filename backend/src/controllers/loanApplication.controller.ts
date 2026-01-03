@@ -45,17 +45,17 @@ export const getAllLoanApplications = async (req: Request, res: Response) => {
     }
 }
 
-export const approveLoanApplication = async (req: Request, res: Response) => {
-  try {
-    const { applicationId } = req.params
+// export const approveLoanApplication = async (req: Request, res: Response) => {
+//   try {
+//     const { applicationId } = req.params
     
-    if (!applicationId) {
-      return res.status(400).json({ message: 'Application ID is required' })
-    }
+//     if (!applicationId) {
+//       return res.status(400).json({ message: 'Application ID is required' })
+//     }
 
-    const result = await loanApplicationService.approveLoanApplication(applicationId)
-    res.json(result)
-  } catch (err: any) {
-    res.status(400).json({ message: err.message })
-  }
-}
+//     const result = await loanApplicationService.approveLoanApplication(applicationId)
+//     res.json(result)
+//   } catch (err: any) {
+//     res.status(400).json({ message: err.message })
+//   }
+// }

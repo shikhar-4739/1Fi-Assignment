@@ -7,6 +7,11 @@ declare global {
         userId: string
         role: string
       }
+      partner?: {
+        id: string
+        name: string
+        rateLimitPerMin: number
+      }
     }
   }
 }

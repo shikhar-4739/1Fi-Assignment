@@ -24,11 +24,12 @@ import authRoutes from './routes/auth.routes.js'
 import loanApplicationRoutes from './routes/loanApplication.routes.js';
 import approvedLoanRoutes from './routes/approvedLoans.routes.js';
 import collateralRoutes from './routes/collateral.routes.js';
+import fintechPartnerRoutes from './routes/fintechPartner.routes.js';
 
 app.use('/api/loan-products', loanProductRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/loan-application', loanApplicationRoutes);
 app.use('/api/approved-loans', approvedLoanRoutes);
 app.use('/api/collateral', collateralRoutes);
-
+app.use('/api/partner', fintechPartnerRoutes)
 export default app
