@@ -18,6 +18,7 @@ const router = Router()
  *             email: "user@example.com"
  *             password: "password123"
  *             name: "John Doe"
+ *             role: "User"
  *     responses:
  *       201:
  *         description: User registered successfully

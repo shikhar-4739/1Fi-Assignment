@@ -1,9 +1,24 @@
-import Image from "next/image";
+import Features from "@/pages/landingPage/Features";
+import Hero from "@/pages/landingPage/Hero";
+import Solution from "@/pages/landingPage/Solution";
+import Integration from "@/pages/landingPage/Integration";
+import { Inter } from "next/font/google";
+import Trust from "@/pages/landingPage/Trust";
+import Footer from "@/components/footer";
+import Navbar from "@/components/navbar";
 
 export default function Home() {
   return (
-    <div>
-      <h1>Welcome to the Home Page</h1>
+    <div className="min-h-screen bg-linear-to-b from-slate-50 to-white">
+      {/* Navigation */}
+      <Navbar />
+
+      <Hero />
+      <Features />
+      <Solution />
+      <Integration />
+      <Trust />
+      <Footer />
     </div>
   );
 }

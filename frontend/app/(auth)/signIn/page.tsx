@@ -1,10 +1,9 @@
-
-"use client"
+import SignIn from "@/pages/Auth/SignIn"
 
 const page = () => {
   return (
     <div>
-      sign In Page
+      <SignIn />
     </div>
   )
 }
