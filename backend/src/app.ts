@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.get('/health', (_: Request, res: Response) => {
-  res.json({ status: 'OK', service: '1Fi LMS Backend' })
+  res.json({ status: 'OK', service: '1Fi LMS Backend Service' })
 })
 
 import loanProductRoutes from './routes/loanProduct.routes.js'
