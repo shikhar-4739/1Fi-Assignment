@@ -26,6 +26,18 @@ export interface loginUserData {
     }
 }
 
+export interface addCollateralResponse {
+    id: string;
+    fundName: string;
+    isin: string;
+    units: number;
+    nav: number;
+    loanApplicationId: string;
+    partnerId: string | null;
+    partnerCustomerId: string | null;
+    createdAt: string;
+}
+
 export interface loanApplicationData {
     id: string;
     loanAmount: number;
@@ -46,6 +58,7 @@ export interface loanApplicationData {
         createdAt: string;
     };
     user?: user[];
+    collaterals?: addCollateralResponse[];
 }
 
 export interface user {
@@ -109,18 +122,6 @@ export interface addCollateralData {
     isin: string;
     units: number;
     nav: number;
-}
-
-export interface addCollteralResponse {
-    id: string;
-    fundName: string;
-    isin: string;
-    units: number;
-    nav: number;
-    loanApplicationId: string;
-    partnerId: string | null;
-    partnerCustomerId: string | null;
-    createdAt: string;
 }
 
 

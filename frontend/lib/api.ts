@@ -1,4 +1,4 @@
-import { addCollateralData, addCollteralResponse, approvedLoansData, CreateFintechPartnerResponse, createLoanApplicationData, createLoanApplicationResponse, evaluateLoanApplicationResponse, getLoanProductData, getPartnerData, loanApplicationData, loginUserData, registerUserData, registerUserResponse } from "@/types/interface";
+import { addCollateralData, addCollateralResponse, approvedLoansData, CreateFintechPartnerResponse, createLoanApplicationData, createLoanApplicationResponse, evaluateLoanApplicationResponse, getLoanProductData, getPartnerData, loanApplicationData, loginUserData, registerUserData, registerUserResponse } from "@/types/interface";
 import axios from "axios";
 const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -72,7 +72,7 @@ export async function getAllLoanApplications(): Promise<ApiResponse<loanApplicat
 }
 
 export async function getUserLoanApplications(): Promise<ApiResponse<loanApplicationData[]>> {
-  return apiRequest<loanApplicationData[]>("/api/loan-applications/me","GET");
+  return apiRequest<loanApplicationData[]>("/api/loan-application/me","GET");
 }
 
 export async function createLoanApplication(data: createLoanApplicationData): Promise<ApiResponse<createLoanApplicationResponse>> {
@@ -91,12 +91,12 @@ export async function addLoanProduct(data: getLoanProductData): Promise<ApiRespo
   return apiRequest<getLoanProductData>("/api/loan-products","POST", data);
 }
 
-export async function addCollateral(data: addCollateralData): Promise<ApiResponse<addCollteralResponse>> {
-  return apiRequest<addCollteralResponse>("/api/collateral","POST", data);
+export async function addCollateral(data: addCollateralData): Promise<ApiResponse<addCollateralResponse>> {
+  return apiRequest<addCollateralResponse>("/api/collateral","POST", data);
 }
 
-export async function getCollateralforLoanApplication(loanApplicationId: string): Promise<ApiResponse<addCollteralResponse[]>> {
-  return apiRequest<addCollteralResponse[]>(`/api/collateral/${loanApplicationId}`, "GET");
+export async function getCollateralforLoanApplication(loanApplicationId: string): Promise<ApiResponse<addCollateralResponse[]>> {
+  return apiRequest<addCollateralResponse[]>(`/api/collateral/${loanApplicationId}`, "GET");
 }
 
 export async function getApprovedLoans(): Promise<ApiResponse<approvedLoansData[]>> {

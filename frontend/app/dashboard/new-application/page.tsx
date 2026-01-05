@@ -1,9 +1,10 @@
+import NewApplication from '@/pages/dashboard/NewApplication'
 import React from 'react'
 
 const page = () => {
   return (
     <div>
-      Create a New Application Page By form
+      <NewApplication />
     </div>
   )
 }

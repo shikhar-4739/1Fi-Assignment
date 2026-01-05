@@ -32,6 +32,7 @@ const SignIn = () => {
         localStorage.setItem("userId", (response.data.user.id));
         localStorage.setItem("name", (response.data.user.name));
         localStorage.setItem("email", (response.data.user.email));
+        localStorage.setItem("role", (response.data.user.role));
         toast.success("Login successful!");
         router.push("/dashboard");
       }

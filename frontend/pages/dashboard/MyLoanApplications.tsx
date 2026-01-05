@@ -1,58 +1,31 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getAllLoanApplications, evaluateLoanApplication } from '@/lib/api';
-import { loanApplicationData } from '@/types/interface';
+import { getUserLoanApplications } from '@/lib/api';
 import { getStatusColor } from '@/lib/constants';
-import { toast } from 'sonner';
+import { loanApplicationData } from '@/types/interface';
 
-const AllLoanApplication = () => {
+const MyLoanApplications = () => {
   const [loanApplications, setLoanApplications] = useState<loanApplicationData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [hoveredCollateral, setHoveredCollateral] = useState<string | null>(null);
-  const [evaluatingId, setEvaluatingId] = useState<string | null>(null);
-  const [userRole, setUserRole] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchLoanApplications();
-    const role = localStorage.getItem('role');
-    setUserRole(role);
+    fetchMyLoanApplications();
   }, []);
 
-  const fetchLoanApplications = async () => {
+  const fetchMyLoanApplications = async () => {
     try {
       setLoading(true);
-      const data = await getAllLoanApplications();
-      if(data.status !== 200) {
-        throw new Error('Failed to fetch loan applications');
-      }
+      const data = await getUserLoanApplications();
       setLoanApplications(data.data);
       setError('');
     } catch (err: any) {
-      setError(err.message || 'Failed to fetch loan applications');
+      setError(err.message || 'Failed to fetch your loan applications');
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleEvaluateLoan = async (applicationId: string) => {
-    if (userRole !== 'ADMIN') {
-      toast.info('Only admins can evaluate loan applications');
-      return;
-    }
-
-    try {
-      setEvaluatingId(applicationId);
-      await evaluateLoanApplication(applicationId);
-      // Refresh the loan applications after evaluation
-      await fetchLoanApplications();
-      toast.success('Loan application evaluated successfully');
-    } catch (err: any) {
-      toast.error(err.message || 'Failed to evaluate loan application');
-    } finally {
-      setEvaluatingId(null);
     }
   };
 
@@ -73,9 +46,15 @@ const AllLoanApplication = () => {
 
   const filteredApplications = loanApplications.filter((app) => {
     const matchesStatus = filterStatus === 'all' || app.status.toLowerCase() === filterStatus.toLowerCase();
-    
     return matchesStatus;
   });
+
+  const statusCounts = {
+    total: loanApplications.length,
+    pending: loanApplications.filter(app => app.status.toLowerCase() === 'pending').length,
+    approved: loanApplications.filter(app => app.status.toLowerCase() === 'approved').length,
+    rejected: loanApplications.filter(app => app.status.toLowerCase() === 'rejected').length,
+  };
 
   if (loading) {
     return (
@@ -90,7 +69,7 @@ const AllLoanApplication = () => {
       <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
         <p className="text-red-600 font-medium">{error}</p>
         <button
-          onClick={fetchLoanApplications}
+          onClick={fetchMyLoanApplications}
           className="mt-4 px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
         >
           Retry
@@ -101,11 +80,12 @@ const AllLoanApplication = () => {
 
   return (
     <div className="space-y-6">
+
       {/* Filters */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
+        transition={{ delay: 0.4 }}
         className="bg-white rounded-xl shadow-lg p-6"
       >
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
@@ -115,7 +95,7 @@ const AllLoanApplication = () => {
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
           >
             <option value="all">All Status</option>
             <option value="pending">Pending</option>
@@ -130,7 +110,7 @@ const AllLoanApplication = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
+        transition={{ delay: 0.5 }}
         className="bg-white rounded-xl shadow-lg overflow-hidden"
       >
         <div className="overflow-x-auto">
@@ -139,9 +119,6 @@ const AllLoanApplication = () => {
               <tr>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                   Application ID
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                  User Details
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                   Product
@@ -162,13 +139,8 @@ const AllLoanApplication = () => {
                   Status
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                  Created Date
+                  Applied Date
                 </th>
-                {userRole === 'ADMIN' && (
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                    Action
-                  </th>
-                )}
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
@@ -183,16 +155,6 @@ const AllLoanApplication = () => {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-medium text-gray-900">
                       {app.id.substring(0, 8)}...
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm">
-                      <div className="font-medium text-gray-900">
-                        {app.user?.[0]?.name || 'N/A'}
-                      </div>
-                      <div className="text-gray-500">
-                        {app.user?.[0]?.email || 'N/A'}
-                      </div>
                     </div>
                   </td>
                   <td className="px-6 py-4">
@@ -289,8 +251,8 @@ const AllLoanApplication = () => {
                       </div>
                     ) : (
                       <span className="text-sm text-gray-400">No collateral</span>
-                    )
-                  }</td>
+                    )}
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
                       className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(
@@ -305,49 +267,6 @@ const AllLoanApplication = () => {
                       {formatDate(app.createdAt)}
                     </div>
                   </td>
-                  {userRole === 'ADMIN' && (
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {app.status.toLowerCase() === 'pending' ? (
-                        <button
-                          onClick={() => handleEvaluateLoan(app.id)}
-                          disabled={evaluatingId === app.id}
-                          className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
-                            evaluatingId === app.id
-                              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                              : 'bg-linear-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 shadow-md hover:shadow-lg'
-                          }`}
-                        >
-                          {evaluatingId === app.id ? (
-                            <>
-                              <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
-                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                              </svg>
-                              Evaluating...
-                            </>
-                          ) : (
-                            <>
-                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                              </svg>
-                              Evaluate
-                            </>
-                          )}
-                        </button>
-                      ) : (
-                        <span className={`text-sm font-medium ${
-                          app.status.toLowerCase() === 'approved' ? 'text-green-600' :
-                          app.status.toLowerCase() === 'rejected' ? 'text-red-600' :
-                          'text-gray-400'
-                        }`}>
-                          {app.status.toLowerCase() === 'approved' && '✓ Approved'}
-                          {app.status.toLowerCase() === 'rejected' && '✗ Rejected'}
-                          {app.status.toLowerCase() === 'disbursed' && '✓ Disbursed'}
-                          {!['approved', 'rejected', 'disbursed', 'pending'].includes(app.status.toLowerCase()) && '—'}
-                        </span>
-                      )}
-                    </td>
-                  )}
                 </motion.tr>
               ))}
             </tbody>
@@ -371,8 +290,16 @@ const AllLoanApplication = () => {
             </svg>
             <h3 className="mt-2 text-sm font-medium text-gray-900">No applications found</h3>
             <p className="mt-1 text-sm text-gray-500">
-              Try adjusting your filter criteria.
+              {filterStatus !== 'all' 
+                ? 'Try adjusting your filter or create a new application.'
+                : 'You haven\'t submitted any loan applications yet.'}
             </p>
+            <button
+              onClick={() => window.location.href = '/dashboard/new-application'}
+              className="mt-4 px-6 py-2 bg-linear-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all"
+            >
+              Create New Application
+            </button>
           </div>
         )}
       </motion.div>
@@ -380,4 +307,4 @@ const AllLoanApplication = () => {
   );
 };
 
-export default AllLoanApplication;
+export default MyLoanApplications;

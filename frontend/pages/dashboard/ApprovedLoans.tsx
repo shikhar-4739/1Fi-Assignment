@@ -10,6 +10,7 @@ const ApprovedLoans = () => {
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [hoveredLoanId, setHoveredLoanId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchApprovedLoans();
@@ -20,6 +21,7 @@ const ApprovedLoans = () => {
       setLoading(true);
       const data = await getApprovedLoans();
       setApprovedLoans(data.data);
+      console.log(data.data, 'Approved Loans Data');    
       setError('');
     } catch (err: any) {
       setError(err.message || 'Failed to fetch approved loans');
@@ -102,7 +104,7 @@ const ApprovedLoans = () => {
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-r from-green-600 to-emerald-600 rounded-2xl p-8 text-white shadow-xl"
+        className="bg-linear-to-r from-green-600 to-emerald-600 rounded-2xl p-8 text-white shadow-xl"
       >
         <div className="flex items-center justify-between">
           <div>
@@ -196,40 +198,6 @@ const ApprovedLoans = () => {
         </motion.div>
       </div>
 
-      {/* Filters */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        className="bg-white rounded-xl shadow-lg p-6"
-      >
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="flex-1">
-            <input
-              type="text"
-              placeholder="Search by loan ID, name, email, or product..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-            />
-          </div>
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-          >
-            <option value="all">All Status</option>
-            <option value="active">Active</option>
-            <option value="disbursed">Disbursed</option>
-            <option value="closed">Closed</option>
-            <option value="defaulted">Defaulted</option>
-          </select>
-        </div>
-        <div className="mt-4 text-sm text-gray-600">
-          Showing {filteredLoans.length} of {approvedLoans.length} loans
-        </div>
-      </motion.div>
-
       {/* Table */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -239,7 +207,7 @@ const ApprovedLoans = () => {
       >
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
+            <thead className="bg-linear-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
               <tr>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                   Loan ID
@@ -260,6 +228,9 @@ const ApprovedLoans = () => {
                   Repayment Progress
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                  Collateral
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                   Interest Rate
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
@@ -277,6 +248,8 @@ const ApprovedLoans = () => {
               {filteredLoans.map((loan, index) => {
                 const progress = calculateProgress(loan.loanApplication.loanAmount, loan.outstandingAmount);
                 const repaidAmount = calculateRepaidAmount(loan.loanApplication.loanAmount, loan.outstandingAmount);
+                const collaterals = loan.loanApplication.collaterals || [];
+                const totalCollateralValue = collaterals.reduce((sum, col) => sum + (col.units * col.nav), 0);
 
                 return (
                   <motion.tr
@@ -328,11 +301,102 @@ const ApprovedLoans = () => {
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-2">
                           <div
-                            className="bg-gradient-to-r from-green-500 to-emerald-500 h-2 rounded-full transition-all"
+                            className="bg-linear-to-r from-green-500 to-emerald-500 h-2 rounded-full transition-all"
                             style={{ width: `${progress}%` }}
                           />
                         </div>
                       </div>
+                    </td>
+                    <td 
+                      className="px-6 py-4 whitespace-nowrap relative"
+                      onMouseEnter={() => setHoveredLoanId(loan.id)}
+                      onMouseLeave={() => setHoveredLoanId(null)}
+                    >
+                      <div className="flex items-center gap-2 cursor-pointer">
+                        <div className="bg-indigo-100 p-2 rounded-lg">
+                          <svg className="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                          </svg>
+                        </div>
+                        <div>
+                          <div className="text-sm font-semibold text-indigo-600">
+                            {collaterals.length} {collaterals.length === 1 ? 'Fund' : 'Funds'}
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            {formatCurrency(totalCollateralValue)}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Hover Popup */}
+                      {hoveredLoanId === loan.id && collaterals.length > 0 && (
+                        <div className="absolute z-50 left-0 top-full mt-2 w-80 bg-white rounded-lg shadow-2xl border border-gray-200 p-3">
+                          <div className="flex items-center justify-between mb-2 pb-2 border-b border-gray-200">
+                            <h3 className="text-xs font-bold text-gray-900">Collateral Details</h3>
+                            <span className="text-xs bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-full font-semibold">
+                              {collaterals.length} {collaterals.length === 1 ? 'Fund' : 'Funds'}
+                            </span>
+                          </div>
+                          <div className="space-y-2 max-h-52 overflow-y-auto">
+                            {collaterals.map((collateral, idx) => (
+                              <div 
+                                key={collateral.id} 
+                                className="bg-gray-50 rounded-lg p-2 border border-gray-200 hover:border-indigo-300 transition-colors"
+                              >
+                                <div className="flex items-start justify-between mb-1.5">
+                                  <div className="flex-1">
+                                    <div className="text-xs font-semibold text-gray-900 mb-1">
+                                      {collateral.fundName}
+                                    </div>
+                                    <div className="text-xs text-gray-500 font-mono bg-gray-100 px-1.5 py-0.5 rounded inline-block">
+                                      ISIN: {collateral.isin}
+                                    </div>
+                                  </div>
+                                  <div className="text-xs bg-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded font-semibold">
+                                    #{idx + 1}
+                                  </div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-1.5 mt-1.5">
+                                  <div className="bg-white rounded p-1.5">
+                                    <div className="text-xs text-gray-500 mb-0.5">Units</div>
+                                    <div className="text-xs font-semibold text-gray-900">
+                                      {collateral.units.toLocaleString()}
+                                    </div>
+                                  </div>
+                                  <div className="bg-white rounded p-1.5">
+                                    <div className="text-xs text-gray-500 mb-0.5">NAV</div>
+                                    <div className="text-xs font-semibold text-gray-900">
+                                      {formatCurrency(collateral.nav)}
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="mt-1.5 pt-1.5 border-t border-gray-200">
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-xs text-gray-600 font-medium">Total Value:</span>
+                                    <span className="text-xs font-bold text-indigo-600">
+                                      {formatCurrency(collateral.units * collateral.nav)}
+                                    </span>
+                                  </div>
+                                </div>
+                                <div className="mt-1 text-xs text-gray-400">
+                                  Added: {formatDate(collateral.createdAt)}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {hoveredLoanId === loan.id && collaterals.length === 0 && (
+                        <div className="absolute z-50 left-0 top-full mt-2 w-56 bg-white rounded-lg shadow-2xl border border-gray-200 p-3">
+                          <div className="text-center">
+                            <svg className="mx-auto h-6 w-6 text-gray-400 mb-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                            </svg>
+                            <p className="text-xs text-gray-600 font-medium">No collateral added</p>
+                          </div>
+                        </div>
+                      )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-purple-600">

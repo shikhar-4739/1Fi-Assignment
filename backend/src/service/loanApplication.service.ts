@@ -45,7 +45,9 @@ export const createLoanApplication = async (
 export const getUserLoanApplications = async (userId: string) => {
   return prisma.loanApplication.findMany({
     where: { userId },
-    include: { product: true },
+    include: { product: true,
+      collaterals: true
+     },
     orderBy: { createdAt: "desc" },
   });
 };
@@ -55,6 +57,7 @@ export const getAllLoanApplications = async () => {
     include: {
       product: true,
       user: { select: { id: true, name: true, email: true } },
+      collaterals: true,
     },
     orderBy: { createdAt: "desc" },
   });

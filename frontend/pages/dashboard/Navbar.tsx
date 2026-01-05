@@ -1,7 +1,7 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const [showNotifications, setShowNotifications] = useState(false);
@@ -26,12 +26,30 @@ const Navbar = () => {
   };
 
   const notifications = [
-    { id: 1, title: "New loan application", message: "A new application has been submitted", time: "5 min ago", unread: true },
-    { id: 2, title: "Application approved", message: "Loan #12345 has been approved", time: "1 hour ago", unread: true },
-    { id: 3, title: "Payment received", message: "Payment for loan #67890 received", time: "2 hours ago", unread: false },
+    {
+      id: 1,
+      title: "New loan application",
+      message: "A new application has been submitted",
+      time: "5 min ago",
+      unread: true,
+    },
+    {
+      id: 2,
+      title: "Application approved",
+      message: "Loan #12345 has been approved",
+      time: "1 hour ago",
+      unread: true,
+    },
+    {
+      id: 3,
+      title: "Payment received",
+      message: "Payment for loan #67890 received",
+      time: "2 hours ago",
+      unread: false,
+    },
   ];
 
-  const unreadCount = notifications.filter(n => n.unread).length;
+  const unreadCount = notifications.filter((n) => n.unread).length;
 
   return (
     <nav className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
@@ -71,7 +89,7 @@ const Navbar = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"
+                className="relative p-2 text-gray-600 hover:cursor-pointer hover:bg-gray-100 rounded-xl transition-colors"
               >
                 <svg
                   className="h-6 w-6"
@@ -107,9 +125,11 @@ const Navbar = () => {
                     transition={{ duration: 0.2 }}
                     className="absolute right-0 mt-2 w-96 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden"
                   >
-                    <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50">
+                    <div className="p-4 border-b border-gray-200 bg-linear-to-r from-blue-50 to-purple-50">
                       <div className="flex items-center justify-between">
-                        <h3 className="text-lg font-semibold text-gray-900">Notifications</h3>
+                        <h3 className="text-lg font-semibold text-gray-900">
+                          Notifications
+                        </h3>
                         <span className="text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-full">
                           {unreadCount} new
                         </span>
@@ -123,11 +143,23 @@ const Navbar = () => {
                           className="p-4 border-b border-gray-100 cursor-pointer"
                         >
                           <div className="flex items-start gap-3">
-                            <div className={`flex-shrink-0 w-2 h-2 mt-2 rounded-full ${notification.unread ? 'bg-blue-600' : 'bg-gray-300'}`} />
+                            <div
+                              className={`shrink-0 w-2 h-2 mt-2 rounded-full ${
+                                notification.unread
+                                  ? "bg-blue-600"
+                                  : "bg-gray-300"
+                              }`}
+                            />
                             <div className="flex-1 min-w-0">
-                              <p className="text-sm font-semibold text-gray-900">{notification.title}</p>
-                              <p className="text-sm text-gray-600 mt-1">{notification.message}</p>
-                              <p className="text-xs text-gray-500 mt-2">{notification.time}</p>
+                              <p className="text-sm font-semibold text-gray-900">
+                                {notification.title}
+                              </p>
+                              <p className="text-sm text-gray-600 mt-1">
+                                {notification.message}
+                              </p>
+                              <p className="text-xs text-gray-500 mt-2">
+                                {notification.time}
+                              </p>
                             </div>
                           </div>
                         </motion.div>
@@ -149,97 +181,25 @@ const Navbar = () => {
             {/* User Profile */}
             <div className="relative">
               <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => setShowProfileMenu(!showProfileMenu)}
-                className="flex items-center gap-3 p-2 pr-3 hover:bg-gray-100 rounded-xl transition-colors"
+                whileHover={{ backgroundColor: "#fef2f2", x: 4 }}
+                onClick={handleLogout}
+                className="w-full flex items-center hover:cursor-pointer gap-3 px-4 py-3 text-left text-sm text-red-600 rounded-lg transition-colors"
               >
-                <div className="relative">
-                  <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold shadow-lg ring-2 ring-white">
-                    {userName.charAt(0).toUpperCase()}
-                  </div>
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-white"
-                  />
-                </div>
-                <div className="text-left hidden md:block">
-                  <p className="text-sm font-semibold text-gray-900">{userName}</p>
-                  <p className="text-xs text-gray-500">Admin</p>
-                </div>
                 <svg
-                  className={`h-4 w-4 text-gray-500 transition-transform ${showProfileMenu ? 'rotate-180' : ''}`}
+                  className="h-5 w-5"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                  />
                 </svg>
+                <span>Logout</span>
               </motion.button>
-
-              {/* Profile Dropdown */}
-              <AnimatePresence>
-                {showProfileMenu && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden"
-                  >
-                    <div className="p-4 bg-gradient-to-r from-blue-50 to-purple-50 border-b border-gray-200">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold shadow-lg">
-                          {userName.charAt(0).toUpperCase()}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-semibold text-gray-900 truncate">{userName}</p>
-                          <p className="text-xs text-gray-600 truncate">{userEmail}</p>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="p-2">
-                      <motion.button
-                        whileHover={{ backgroundColor: "#f3f4f6", x: 4 }}
-                        onClick={() => router.push('/dashboard/profile')}
-                        className="w-full flex items-center gap-3 px-4 py-3 text-left text-sm text-gray-700 rounded-lg transition-colors"
-                      >
-                        <svg className="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                        <span>My Profile</span>
-                      </motion.button>
-                      
-                      <motion.button
-                        whileHover={{ backgroundColor: "#f3f4f6", x: 4 }}
-                        onClick={() => router.push('/dashboard/settings')}
-                        className="w-full flex items-center gap-3 px-4 py-3 text-left text-sm text-gray-700 rounded-lg transition-colors"
-                      >
-                        <svg className="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                        <span>Settings</span>
-                      </motion.button>
-
-                      <div className="my-2 border-t border-gray-200" />
-
-                      <motion.button
-                        whileHover={{ backgroundColor: "#fef2f2", x: 4 }}
-                        onClick={handleLogout}
-                        className="w-full flex items-center gap-3 px-4 py-3 text-left text-sm text-red-600 rounded-lg transition-colors"
-                      >
-                        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                        </svg>
-                        <span>Logout</span>
-                      </motion.button>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
             </div>
           </div>
         </div>

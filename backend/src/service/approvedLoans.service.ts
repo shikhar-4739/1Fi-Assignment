@@ -15,7 +15,8 @@ export const getApprovedLoans = async () => {
       },
       loanApplication: {
         include: {
-          product: true
+          product: true,
+          collaterals: true
         }
       },
     },

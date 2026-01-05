@@ -9,12 +9,15 @@ const Sidebar = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [userName, setUserName] = useState("User");
   const [userEmail, setUserEmail] = useState("");
+  const [userRole, setUserRole] = useState("USER");
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
     const name = localStorage.getItem("name") || "User";
     const email = localStorage.getItem("email") || "";
+    const role = localStorage.getItem("role") || "USER";
+    setUserRole(role);
     setUserName(name);
     setUserEmail(email);
   }, []);
@@ -28,6 +31,7 @@ const Sidebar = () => {
     localStorage.removeItem("userId");
     localStorage.removeItem("name");
     localStorage.removeItem("email");
+    localStorage.removeItem("role");
     router.push("/signIn");
   };
 
@@ -91,7 +95,7 @@ const Sidebar = () => {
               onClick={() => handleNavigation(item.href)}
               whileHover={{ scale: 1.02, x: 4 }}
               whileTap={{ scale: 0.98 }}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+              className={`w-full flex hover:cursor-pointer items-center gap-3 px-4 py-3 rounded-xl transition-all ${
                 isActive
                   ? "bg-linear-to-r from-blue-600 to-purple-600 text-white shadow-lg"
                   : "text-gray-700 hover:bg-gray-100"
@@ -158,7 +162,7 @@ const Sidebar = () => {
                   className="flex-1 min-w-0"
                 >
                   <p className="text-sm font-semibold text-gray-900 truncate">
-                    {userName}
+                    {userName}{userRole === "ADMIN" ? " (Admin)" : ""}
                   </p>
                   <p className="text-xs text-gray-500 truncate">
                     {userEmail}

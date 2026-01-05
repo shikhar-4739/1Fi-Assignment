@@ -1,10 +1,10 @@
-import AllLoanApplication from '@/pages/dashboard/AllLoanApplication'
+import LoanApplications from '@/pages/dashboard/LoanApplications'
 import React from 'react'
 
 const page = () => {
   return (
     <div>
-      <AllLoanApplication />
+      <LoanApplications />
     </div>
   )
 }

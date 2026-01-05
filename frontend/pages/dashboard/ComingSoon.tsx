@@ -37,7 +37,7 @@ const ComingSoon = () => {
                   rotate: { duration: 20, repeat: Infinity, ease: "linear" },
                   scale: { duration: 2, repeat: Infinity }
                 }}
-                className="w-32 h-32 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-2xl"
+                className="w-32 h-32 bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-2xl"
               >
                 <motion.svg
                   animate={{ rotate: -360 }}
@@ -74,7 +74,7 @@ const ComingSoon = () => {
                   }}
                 >
                   <div
-                    className="absolute w-3 h-3 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full shadow-lg"
+                    className="absolute w-3 h-3 bg-linear-to-r from-blue-400 to-purple-400 rounded-full shadow-lg"
                     style={{
                       top: `${10 + i * 10}%`,
                       left: "50%",
@@ -93,7 +93,7 @@ const ComingSoon = () => {
             transition={{ delay: 0.3 }}
             className="text-6xl font-bold mb-4"
           >
-            <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
               Coming Soon
             </span>
           </motion.h1>
@@ -150,7 +150,7 @@ const ComingSoon = () => {
                 whileHover={{ scale: 1.05, y: -5 }}
                 className="bg-white rounded-xl shadow-lg p-6 border border-gray-100"
               >
-                <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-white w-16 h-16 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <div className="bg-linear-to-r from-blue-500 to-purple-500 text-white w-16 h-16 rounded-lg flex items-center justify-center mx-auto mb-4">
                   {feature.icon}
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
@@ -177,7 +177,7 @@ const ComingSoon = () => {
                 initial={{ width: 0 }}
                 animate={{ width: "75%" }}
                 transition={{ duration: 1.5, delay: 1 }}
-                className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full"
+                className="bg-linear-to-r from-blue-500 to-purple-500 h-3 rounded-full"
               />
             </div>
           </motion.div>
@@ -193,7 +193,7 @@ const ComingSoon = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => router.push('/dashboard')}
-              className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all flex items-center gap-2"
+              className="px-8 py-3 bg-linear-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all flex items-center gap-2"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -227,7 +227,7 @@ const ComingSoon = () => {
                   repeat: Infinity,
                   delay: Math.random() * 5,
                 }}
-                className="absolute w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full"
+                className="absolute w-2 h-2 bg-linear-to-r from-blue-400 to-purple-400 rounded-full"
                 style={{
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
