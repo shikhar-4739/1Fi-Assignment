@@ -1,11 +1,12 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-
+import { useRouter } from 'next/navigation';
 const Hero = () => {
   const [mounted, setMounted] = useState(false);
   const [loanAmount, setLoanAmount] = useState(500000);
   const [displayAmount, setDisplayAmount] = useState(0);
   const [activeFeature, setActiveFeature] = useState(0);
+  const router = useRouter();
 
   const stats = [
     { value: "₹500Cr+", label: "Loans Disbursed", delay: "delay-300" },
@@ -18,6 +19,9 @@ const Hero = () => {
     { title: "Zero Paperwork", desc: "100% digital process" },
     { title: "No Liquidation", desc: "Keep your investments growing" },
   ];
+  const handleSignIn = () => {
+    router.push("/signIn");
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -151,7 +155,7 @@ const Hero = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 mb-6">
-            <button className="group px-6 py-3 rounded-xl bg-linear-to-r from-blue-600 to-indigo-600 text-white font-semibold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 text-sm">
+            <button onClick={handleSignIn} className="group px-6 py-3 hover:cursor-pointer rounded-xl bg-linear-to-r from-blue-600 to-indigo-600 text-white font-semibold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 text-sm">
               <span>Schedule Demo</span>
               <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -309,7 +313,7 @@ const Hero = () => {
 
               {/* CTA Button */}
               <button
-                onClick={() => alert(`Applying for ₹${loanAmount.toLocaleString('en-IN')}`)}
+                onClick={() => router.push("/register")}
                 className="w-full py-3 rounded-xl bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 text-white font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 group relative overflow-hidden text-sm"
               >
                 <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />

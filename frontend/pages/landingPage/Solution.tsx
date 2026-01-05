@@ -1,10 +1,11 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
-
+import { useRouter } from 'next/navigation';
 const Solution = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
+  const router = useRouter();
 
   const solutions = [
     {
@@ -13,6 +14,7 @@ const Solution = () => {
       emoji: "💰",
       linear: "from-blue-500 to-indigo-600",
       bglinear: "from-blue-50 to-indigo-50",
+      active: true,
       features: [
         { text: "Instant loan approval in minutes", icon: "⚡" },
         { text: "No mutual fund liquidation required", icon: "🚫" },
@@ -21,30 +23,32 @@ const Solution = () => {
       ]
     },
     {
-      title: "For NBFCs",
-      icon: "🏢",
-      emoji: "🎯",
-      linear: "from-purple-500 to-pink-600",
-      bglinear: "from-purple-50 to-pink-50",
-      featured: true,
-      features: [
-        { text: "Complete loan lifecycle management", icon: "🔄" },
-        { text: "Automated compliance and reporting", icon: "📋" },
-        { text: "Portfolio risk management", icon: "📊" },
-        { text: "White-label solutions", icon: "🎨" }
-      ]
-    },
-    {
       title: "For Partners",
       icon: "🤝",
       emoji: "🔗",
       linear: "from-green-500 to-emerald-600",
       bglinear: "from-green-50 to-emerald-50",
+      featured: true,
+      active: true,
       features: [
         { text: "Easy API integration", icon: "⚙️" },
         { text: "Real-time webhook notifications", icon: "🔔" },
         { text: "Comprehensive documentation", icon: "📚" },
         { text: "Dedicated technical support", icon: "💬" }
+      ]
+    },
+    {
+      title: "For NBFCs",
+      icon: "🏢",
+      emoji: "🎯",
+      linear: "from-purple-500 to-pink-600",
+      bglinear: "from-purple-50 to-pink-50",
+      active: false,
+      features: [
+        { text: "Complete loan lifecycle management", icon: "🔄" },
+        { text: "Automated compliance and reporting", icon: "📋" },
+        { text: "Portfolio risk management", icon: "📊" },
+        { text: "White-label solutions", icon: "🎨" }
       ]
     }
   ];
@@ -273,10 +277,12 @@ const Solution = () => {
                   whileHover={{ opacity: 1, y: 0 }}
                   className="mt-8 opacity-0 group-hover:opacity-100 transition-all duration-300"
                 >
-                  <motion.button
+                  {solution.active ?  
+                  (<motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className={`w-full py-3 rounded-xl bg-linear-to-r ${solution.linear} text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2`}
+                    onClick={() => router.push("/signIn")}
+                    className={`w-full py-3 rounded-xl bg-linear-to-r ${solution.linear} hover:cursor-pointer text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2`}
                   >
                     <span>Get Started</span>
                     <motion.svg
@@ -289,7 +295,25 @@ const Solution = () => {
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </motion.svg>
-                  </motion.button>
+                  </motion.button>) :
+                  (<motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className={`w-full py-3 rounded-xl bg-linear-to-r ${solution.linear} text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2`}
+                  >
+                    <span>Coming soon</span>
+                    <motion.svg
+                      animate={{ x: [0, 5, 0] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </motion.svg>
+                  </motion.button>)
+                    }
                 </motion.div>
               </div>
 

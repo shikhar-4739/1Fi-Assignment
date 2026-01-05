@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {useRouter} from 'next/navigation';
 import { loginInUser } from "@/lib/api";
@@ -12,6 +12,13 @@ const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      router.push("/dashboard");
+    }
+  }, [router]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     try {
       e.preventDefault();
@@ -23,8 +30,10 @@ const SignIn = () => {
         setIsLoading(false);
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("userId", (response.data.user.id));
-        router.push("/dashboard");
+        localStorage.setItem("name", (response.data.user.name));
+        localStorage.setItem("email", (response.data.user.email));
         toast.success("Login successful!");
+        router.push("/dashboard");
       }
     } catch (error) {
         setIsLoading(false);

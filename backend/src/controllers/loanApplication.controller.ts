@@ -39,7 +39,7 @@ export const getMyLoanApplications = async (req: Request, res: Response) => {
 export const getAllLoanApplications = async (req: Request, res: Response) => {
     try {
       const applications = await loanApplicationService.getAllLoanApplications()
-      res.json(applications)
+      res.status(200).json(applications)
     } catch {
       res.status(500).json({ message: 'Failed to fetch applications' })
     }

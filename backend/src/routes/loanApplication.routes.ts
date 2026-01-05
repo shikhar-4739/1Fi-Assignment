@@ -12,7 +12,7 @@ const router = Router();
 
 /**
  * @swagger
- * /api/loan-applications:
+ * /api/loan-application:
  *   post:
  *     summary: Create loan application (User)
  *     security:
@@ -26,6 +26,7 @@ const router = Router();
  *           example:
  *             productId: "loan-product-uuid"
  *             loanAmount: 500000
+ *             tenure: 24
  *     responses:
  *       201:
  *         description: Loan application created
@@ -34,7 +35,7 @@ router.post("/", authenticate, createLoanApplication);
 
 /**
  * @swagger
- * /api/loan-applications/me:
+ * /api/loan-application/me:
  *   get:
  *     summary: Get my loan applications
  *     security:
@@ -49,7 +50,7 @@ router.get("/me", authenticate, getMyLoanApplications);
 
 /**
  * @swagger
- * /api/loan-applications/all:
+ * /api/loan-application/all:
  *   get:
  *     summary: Get all loan applications
  *     security:
@@ -64,7 +65,7 @@ router.get("/all", authenticate, getAllLoanApplications);
 
 /**
  * @swagger
- * /api/loan-applications/{loanApplicationId}/evaluate:
+ * /api/loan-application/{loanApplicationId}/evaluate:
  *   put:
  *     summary: Evaluate loan application (Admin)
  *     security:

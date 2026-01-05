@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { createLoanApplicationViaPartner, createPartner } from '../controllers/fintechPartner.controller'
+import { createLoanApplicationViaPartner, createPartner, getAllPartners } from '../controllers/fintechPartner.controller'
 import { authenticate } from '../middleware/auth.middleware'
 import { authorize } from '../middleware/role.middleware'
 import { authenticatePartner } from '../middleware/partnerAuth.middleware'
@@ -9,7 +9,7 @@ const router = Router()
 
 /**
  * @swagger
- * /api/partners/add-new:
+ * /api/partner/add-new:
  *   post:
  *     summary: Create new fintech partner (Admin)
  *     security:
@@ -22,8 +22,6 @@ const router = Router()
  *         application/json:
  *           example:
  *             name: "Partner Bank Ltd"
- *             apiKey: "generated-api-key"
- *             rateLimit: 100
  *     responses:
  *       201:
  *         description: Partner created successfully
@@ -37,7 +35,7 @@ router.post(
 
 /**
  * @swagger
- * /api/partners/loan-application:
+ * /api/partner/loan-application:
  *   post:
  *     summary: Create loan application via partner
  *     security:
@@ -62,5 +60,49 @@ router.post(
   partnerRateLimiter,
   createLoanApplicationViaPartner
 )
+
+/**
+ * @swagger
+ * /api/partner:
+ *   get:
+ *     summary: Get all fintech partners (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     tags:
+ *       - Fintech Partner
+ *     responses:
+ *       200:
+ *         description: Partners retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 partners:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                       name:
+ *                         type: string
+ *                       apiKey:
+ *                         type: string
+ *                       rateLimit:
+ *                         type: number
+ *                       isActive:
+ *                         type: boolean
+ *                       createdAt:
+ *                         type: string
+ *                         format: date-time
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - Admin access required
+ *       500:
+ *         description: Failed to fetch partners
+ */
+router.get('/', authenticate, authorize('ADMIN'), getAllPartners);
 
 export default router

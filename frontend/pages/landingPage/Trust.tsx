@@ -57,6 +57,7 @@ const Trust = () => {
   return (
     <section 
       ref={sectionRef}
+      id="trust" 
       className="relative py-20 bg-linear-to-b from-slate-50 via-white to-slate-50 overflow-hidden"
     >
       {/* Animated Background Elements */}

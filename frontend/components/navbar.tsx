@@ -29,6 +29,19 @@ const Navbar = () => {
     { label: "Trust", href: "#trust" },
   ];
 
+  const handleNavClick = (href: string) => {
+    const targetId = href.replace('#', '');
+    const element = document.getElementById(targetId);
+    
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+    setIsOpen(false);
+  };
+
   const handleSignIn = () => {
     router.push("/signIn");
   };
@@ -72,12 +85,12 @@ const Navbar = () => {
             className="hidden md:flex items-center space-x-1"
           >
             {navLinks.map((link, idx) => (
-              <motion.a
+              <motion.button
                 key={idx}
-                href={link.href}
+                onClick={() => handleNavClick(link.href)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="relative px-4 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors rounded-lg group"
+                className="relative px-4 py-2 text-gray-700 hover:cursor-pointer hover:text-blue-600 font-medium transition-colors rounded-lg group"
               >
                 <span className="flex items-center gap-1.5">
                   {link.label}
@@ -88,7 +101,7 @@ const Navbar = () => {
                   whileHover={{ scaleX: 1 }}
                   transition={{ duration: 0.3 }}
                 />
-              </motion.a>
+              </motion.button>
             ))}
           </motion.div>
 
@@ -176,17 +189,16 @@ const Navbar = () => {
         >
           <div className="py-4 space-y-2">
             {navLinks.map((link, idx) => (
-              <motion.a
+              <motion.button
                 key={idx}
-                href={link.href}
+                onClick={() => handleNavClick(link.href)}
                 initial={{ x: -20, opacity: 0 }}
                 animate={isOpen ? { x: 0, opacity: 1 } : { x: -20, opacity: 0 }}
                 transition={{ delay: idx * 0.1 }}
-                onClick={() => setIsOpen(false)}
-                className="flex items-center gap-2 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all"
+                className="w-full flex items-center gap-2 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all"
               >
                 <span className="font-medium">{link.label}</span>
-              </motion.a>
+              </motion.button>
             ))}
             <motion.div
               initial={{ y: 20, opacity: 0 }}
@@ -194,10 +206,10 @@ const Navbar = () => {
               transition={{ delay: 0.4 }}
               className="pt-4 border-t border-gray-200 space-y-2"
             >
-              <button className="w-full px-4 py-3 text-blue-600 hover:bg-blue-50 font-semibold rounded-lg transition-all">
+              <button onClick={handleSignIn} className="w-full px-4 py-3 text-blue-600 hover:bg-blue-50 font-semibold rounded-lg transition-all">
                 Sign In
               </button>
-              <button className="w-full px-4 py-3 bg-linear-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold shadow-lg">
+              <button onClick={handleRegister} className="w-full px-4 py-3 bg-linear-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold shadow-lg">
                 Get Started
               </button>
             </motion.div>

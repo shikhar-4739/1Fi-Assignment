@@ -10,7 +10,6 @@ import Navbar from "@/components/navbar";
 export default function Home() {
   return (
     <div className="min-h-screen bg-linear-to-b from-slate-50 to-white">
-      {/* Navigation */}
       <Navbar />
 
       <Hero />

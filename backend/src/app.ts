@@ -27,6 +27,7 @@ import loanApplicationRoutes from './routes/loanApplication.routes.js';
 import approvedLoanRoutes from './routes/approvedLoans.routes.js';
 import collateralRoutes from './routes/collateral.routes.js';
 import fintechPartnerRoutes from './routes/fintechPartner.routes.js';
+import userProfileRoutes from './routes/userProfile.routes'
 
 app.use('/api/loan-products', loanProductRoutes);
 app.use('/api/auth', authRoutes);
@@ -34,5 +35,6 @@ app.use('/api/loan-application', loanApplicationRoutes);
 app.use('/api/approved-loans', approvedLoanRoutes);
 app.use('/api/collateral', collateralRoutes);
 app.use('/api/partner', fintechPartnerRoutes)
+app.use('/api/user-profile', userProfileRoutes);
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 export default app

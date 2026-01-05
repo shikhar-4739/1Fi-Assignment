@@ -1,5 +1,5 @@
 "use client";
-import React, { use, useState } from "react";
+import React, { use, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import {useRouter} from 'next/navigation';
@@ -15,6 +15,13 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        router.push("/dashboard");
+      }
+    }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     try {

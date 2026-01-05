@@ -9,7 +9,7 @@ const router = Router()
 
 /**
  * @swagger
- * /api/collaterals:
+ * /api/collateral:
  *   post:
  *     summary: Add collateral to loan application
  *     security:
@@ -33,7 +33,7 @@ router.post('/', authenticate, addCollateral)
 
 /**
  * @swagger
- * /api/collaterals/{loanApplicationId}:
+ * /api/collateral/{loanApplicationId}:
  *   get:
  *     summary: Get collaterals for loan application
  *     security:

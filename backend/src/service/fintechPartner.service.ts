@@ -92,3 +92,18 @@ export const createLoanViaPartner = async (
     return application
   })
 }
+
+
+export const getAllPartnersData = async () => {
+  const partners = await prisma.fintechPartner.findMany({
+    select: {
+      id: true,
+      name: true,
+      isActive: true,
+      rateLimitPerMin: true,
+      apiKey: true,
+      createdAt: true
+    }
+  });
+  return partners;
+}
