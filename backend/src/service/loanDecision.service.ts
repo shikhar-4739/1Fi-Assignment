@@ -26,7 +26,7 @@ export const evaluateAndCreateLoan = async (
     }
 
     const collateralValue = collaterals.reduce(
-      (sum, c) => sum + c.units * c.nav,
+      (sum: number, c: any) => sum + c.units * c.nav,
       0
     )
 
