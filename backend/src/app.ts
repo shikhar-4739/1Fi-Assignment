@@ -1,4 +1,5 @@
 import express from 'express'
+import type { Request, Response } from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import swaggerUi from 'swagger-ui-express'
@@ -17,7 +18,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.get('/health', (_, res) => {
+app.get('/health', (_: Request, res: Response) => {
   res.json({ status: 'OK', service: '1Fi LMS Backend' })
 })
 
