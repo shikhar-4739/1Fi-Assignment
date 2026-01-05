@@ -2,7 +2,6 @@ import Features from "@/pages/landingPage/Features";
 import Hero from "@/pages/landingPage/Hero";
 import Solution from "@/pages/landingPage/Solution";
 import Integration from "@/pages/landingPage/Integration";
-import { Inter } from "next/font/google";
 import Trust from "@/pages/landingPage/Trust";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
