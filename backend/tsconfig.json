@@ -12,11 +12,10 @@
     "target": "ES2023",
     "esModuleInterop": true,
     "ignoreDeprecations": "5.0",
-    "types": ["node"],
     "typeRoots": ["./node_modules/@types", "./src/types"],
     // For nodejs:
     // "lib": ["esnext"],
-    // "types": ["node"],
+    "types": ["node"],
     // and npm install -D @types/node
 
     // Other Outputs
