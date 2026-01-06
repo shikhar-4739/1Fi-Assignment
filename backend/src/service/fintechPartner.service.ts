@@ -1,3 +1,4 @@
+import type { Prisma } from '@prisma/client'
 import {prisma} from '../config/db'
 import { ApiError } from '../utils/ApiError'
 import { generateApiKey } from '../utils/apikey'
@@ -36,7 +37,7 @@ export const createLoanViaPartner = async (
   loanAmount: number,
   collaterals: CollateralInput[]
 ) => {
-  return prisma.$transaction(async (tx) => {
+  return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
 
     let user = await tx.user.findFirst({
       where: {

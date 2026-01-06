@@ -1,9 +1,10 @@
+import type { Prisma } from '@prisma/client'
 import {prisma} from '../config/db'
 
 export const evaluateAndCreateLoan = async (
   loanApplicationId: string
 ) => {
-  return prisma.$transaction(async (tx) => {
+  return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
     const application = await tx.loanApplication.findUnique({
       where: { id: loanApplicationId },
       include: { product: true }
