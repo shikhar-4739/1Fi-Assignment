@@ -3,7 +3,7 @@ import type { Request, Response } from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import swaggerUi from 'swagger-ui-express'
-import { swaggerSpec } from './config/swagger'
+import { swaggerSpec } from './config/swagger.js'
 const app = express()
 
 
