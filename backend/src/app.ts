@@ -2,8 +2,8 @@ import express from 'express'
 import type { Request, Response } from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
-// import swaggerUi from 'swagger-ui-express'
-// import { swaggerSpec } from './config/swagger.js'
+import swaggerUi from 'swagger-ui-express'
+import { swaggerSpec } from './config/swagger.js'
 const app = express()
 
 
@@ -28,7 +28,7 @@ import loanApplicationRoutes from './routes/loanApplication.routes.js';
 import approvedLoanRoutes from './routes/approvedLoans.routes.js';
 import collateralRoutes from './routes/collateral.routes.js';
 import fintechPartnerRoutes from './routes/fintechPartner.routes.js';
-// import userProfileRoutes from './routes/userProfile.routes.js'
+import userProfileRoutes from './routes/userProfile.routes.js'
 
 app.use('/api/loan-products', loanProductRoutes);
 app.use('/api/auth', authRoutes);
@@ -36,6 +36,6 @@ app.use('/api/loan-application', loanApplicationRoutes);
 app.use('/api/approved-loans', approvedLoanRoutes);
 app.use('/api/collateral', collateralRoutes);
 app.use('/api/partner', fintechPartnerRoutes)
-// app.use('/api/user-profile', userProfileRoutes);
-// app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+app.use('/api/user-profile', userProfileRoutes);
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 export default app
