@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express'
-import { createFintechPartner, createLoanViaPartner, getAllPartnersData } from '../service/fintechPartner.service'
+import { createFintechPartner, createLoanViaPartner, getAllPartnersData } from '../service/fintechPartner.service.js'
 
 export const createPartner = async (req: Request, res: Response) => {
   try {

@@ -2,8 +2,8 @@ import { Router } from 'express'
 import {
   addCollateral,
   getCollaterals
-} from '../controllers/collateral.controller'
-import { authenticate } from '../middleware/auth.middleware'
+} from '../controllers/collateral.controller.js'
+import { authenticate } from '../middleware/auth.middleware.js'
 
 const router = Router()
 

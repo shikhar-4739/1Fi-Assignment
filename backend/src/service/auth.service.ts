@@ -1,9 +1,9 @@
-import { prisma } from "../config/db";
+import { prisma } from "../config/db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import type { StringValue } from "ms";
 import type { Secret } from "jsonwebtoken";
-import { ApiError } from "../utils/ApiError";
+import { ApiError } from "../utils/ApiError.js";
 import type { UserRole } from "@prisma/client";
 
 export const registerUser = async (

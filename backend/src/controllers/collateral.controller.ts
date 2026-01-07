@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express'
-import * as collateralService from '../service/collateral.service'
+import * as collateralService from '../service/collateral.service.js'
 
 export const addCollateral = async (req: Request, res: Response) => {
   try {

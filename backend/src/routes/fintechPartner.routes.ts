@@ -1,9 +1,9 @@
 import { Router } from 'express'
-import { createLoanApplicationViaPartner, createPartner, getAllPartners } from '../controllers/fintechPartner.controller'
-import { authenticate } from '../middleware/auth.middleware'
-import { authorize } from '../middleware/role.middleware'
-import { authenticatePartner } from '../middleware/partnerAuth.middleware'
-import { partnerRateLimiter } from '../middleware/partnerRateLimit.middleware'
+import { createLoanApplicationViaPartner, createPartner, getAllPartners } from '../controllers/fintechPartner.controller.js'
+import { authenticate } from '../middleware/auth.middleware.js'
+import { authorize } from '../middleware/role.middleware.js'
+import { authenticatePartner } from '../middleware/partnerAuth.middleware.js'
+import { partnerRateLimiter } from '../middleware/partnerRateLimit.middleware.js'
 
 const router = Router()
 

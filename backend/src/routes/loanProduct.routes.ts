@@ -4,7 +4,7 @@ import {
   getLoanProducts
 } from '../controllers/loanProduct.controller.js'
 import { authenticate } from '../middleware/auth.middleware.js'
-import { authorize } from "../middleware/role.middleware";
+import { authorize } from "../middleware/role.middleware.js";
 const router = Router()
 
 /**

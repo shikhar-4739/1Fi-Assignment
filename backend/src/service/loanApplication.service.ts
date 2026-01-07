@@ -1,5 +1,4 @@
-import { prisma } from "../config/db";
-import { ApiError } from "../utils/ApiError";
+import { prisma } from "../config/db.js";
 
 export const createLoanApplication = async (
   applicantId: string,

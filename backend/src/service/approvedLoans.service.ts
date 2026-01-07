@@ -1,4 +1,4 @@
-import {prisma} from '../config/db'
+import {prisma} from '../config/db.js'
 
 export const getApprovedLoans = async () => {
   return prisma.loan.findMany({

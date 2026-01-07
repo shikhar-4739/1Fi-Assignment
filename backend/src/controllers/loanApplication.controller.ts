@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express'
-import * as loanApplicationService from '../service/loanApplication.service'
+import * as loanApplicationService from '../service/loanApplication.service.js'
 
 export const createLoanApplication = async (req: Request, res: Response) => {
   try {

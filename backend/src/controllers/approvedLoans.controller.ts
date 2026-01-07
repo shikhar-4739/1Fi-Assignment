@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express'
-import * as approvedLoanService  from '../service/approvedLoans.service'
+import * as approvedLoanService  from '../service/approvedLoans.service.js'
 
 export const getApprovedLoans = async (
   _req: Request,

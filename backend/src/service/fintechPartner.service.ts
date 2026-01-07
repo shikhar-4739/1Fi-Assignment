@@ -1,7 +1,7 @@
 import type { Prisma } from '@prisma/client'
-import {prisma} from '../config/db'
-import { ApiError } from '../utils/ApiError'
-import { generateApiKey } from '../utils/apikey'
+import {prisma} from '../config/db.js'
+import { ApiError } from '../utils/ApiError.js'
+import { generateApiKey } from '../utils/apikey.js'
 
 interface CollateralInput {
   fundName: string

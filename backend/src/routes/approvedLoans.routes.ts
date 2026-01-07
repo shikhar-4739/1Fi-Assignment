@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import { getApprovedLoans } from '../controllers/approvedLoans.controller'
-import { authenticate } from '../middleware/auth.middleware'
+import { getApprovedLoans } from '../controllers/approvedLoans.controller.js'
+import { authenticate } from '../middleware/auth.middleware.js'
 
 const router = Router()
 

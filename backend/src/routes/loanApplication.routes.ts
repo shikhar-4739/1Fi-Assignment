@@ -3,10 +3,10 @@ import {
   createLoanApplication,
   getAllLoanApplications,
   getMyLoanApplications,
-} from "../controllers/loanApplication.controller";
-import { authenticate } from "../middleware/auth.middleware";
-import { authorize } from "../middleware/role.middleware";
-import { evaluateLoan } from "../controllers/loanDecision.controller";
+} from "../controllers/loanApplication.controller.js";
+import { authenticate } from "../middleware/auth.middleware.js";
+import { authorize } from "../middleware/role.middleware.js";
+import { evaluateLoan } from "../controllers/loanDecision.controller.js";
 
 const router = Router();
 

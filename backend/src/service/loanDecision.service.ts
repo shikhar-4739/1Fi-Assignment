@@ -1,5 +1,5 @@
 import type { Prisma } from '@prisma/client'
-import {prisma} from '../config/db'
+import {prisma} from '../config/db.js'
 
 export const evaluateAndCreateLoan = async (
   loanApplicationId: string

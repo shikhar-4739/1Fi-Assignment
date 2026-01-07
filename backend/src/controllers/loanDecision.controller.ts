@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express'
-import { evaluateAndCreateLoan } from '../service/loanDecision.service'
+import { evaluateAndCreateLoan } from '../service/loanDecision.service.js'
 
 export const evaluateLoan = async (req: Request, res: Response) => {
   try {
